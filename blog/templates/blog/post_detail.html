@@ -37,3 +37,25 @@
         <p>{{ post.text|linebreaksbr }}</p>
     </article>
 {% endblock %}
+
+{% for comment in post.comments.all %}
+    {% if user.is_authenticated or comment.approved_comment %}
+        <div class="comment">
+            <div class="date">
+                {{ comment.created_date }}
+                {% if not comment.approved_comment %}
+                    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}">
+                        <img src="{% static 'icons/hand-thumbs-down.svg' %}" alt="Remove">
+                    </a>
+                    <a class="btn btn-default" href="{% url 'comment_approve' pk=comment.pk %}">
+                        <img src="{% static 'icons/hand-thumbs-up.svg' %}" alt="Approve">
+                    </a>
+                {% endif %}
+            </div>
+            <strong>{{ comment.author }}</strong>
+            <p>{{ comment.text|linebreaks }}</p>
+        </div>
+    {% endif %}
+{% empty %}
+    <p>No comments here yet :(</p>
+{% endfor %}
