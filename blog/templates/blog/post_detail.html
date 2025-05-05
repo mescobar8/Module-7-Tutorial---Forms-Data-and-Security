@@ -10,6 +10,10 @@
         <button type="submit" class="post btn btn-secondary" name="publish">Publish</button>
     </form>
 {% endif %}
+<form method="POST" action="{% url 'post_remove' pk=post.pk %}" class="post-form">
+    {% csrf_token %}
+    <button type="submit" class="post btn btn-danger" name="delete">Delete</button>
+</form>
 {% block content %}
     <article class="post">
         {% if post.published_date %}
